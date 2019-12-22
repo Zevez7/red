@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
-import StaffForm from "./StaffForm";
-const style = {
+import AddForm from "./ApptAddForm";
+const addModal = {
   Button: {
     borderRight: "1px solid rgba(34,36,38,.15)",
     width: 120,
@@ -12,7 +12,7 @@ const style = {
   }
 };
 
-const StaffModal = props => {
+const AddModal = props => {
   const [modalOpenStatus, setModalOpenStatus] = useState(false);
 
   const ModalClose = () => {
@@ -29,12 +29,12 @@ const StaffModal = props => {
       open={modalOpenStatus}
       trigger={
         <Button
-          style={style.Button}
-          content="Add Staff"
+          style={addModal.Button}
+          content="ADD APPT"
           basic
-          primary
+          color="green"
           icon="plus"
-          // size="mini"
+          size="mini"
           onClick={ModalOpen}
         />
       }
@@ -42,11 +42,11 @@ const StaffModal = props => {
       <Modal.Header>Add New Appointment</Modal.Header>
       <Modal.Content>
         <Modal.Description>
-          <StaffForm ModalClose={ModalClose} />
+          <AddForm ModalClose={ModalClose} />
         </Modal.Description>
       </Modal.Content>
     </Modal>
   );
 };
 
-export default StaffModal;
+export default AddModal;

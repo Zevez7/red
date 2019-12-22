@@ -1,36 +1,22 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Checkbox,
-  Form,
-  Container,
-  List,
-  Grid
-} from "semantic-ui-react";
+import { Button, Checkbox, Form, Container, List } from "semantic-ui-react";
 import { connect } from "react-redux";
-import uid from "uid";
-import { addStaff } from "../../actions/index";
-
-const style = {
-  Checkbox: {
-    padding: 10
-  }
-};
+import { editStaff } from "../../actions/index";
+import SelectorServiceStringArray from "./../../selectors/selectServiceStringArray";
+import selectStaffSelectDetail from "../../selectors/selectStaffSelectDetail";
 
 const StaffForm = props => {
   const [formData, setFormData] = useState({
-    staffName: "",
-    workDay: [],
-    service: []
+    staffName: props.staffSelectDetail.staffName,
+    workDay: props.staffSelectDetail.workDay,
+    service: props.staffSelectDetail.service,
+    staffId: props.staffSelectDetail.staffId
   });
-
-  //****testing
-  console.log("formData", formData);
 
   const handleSubmit = e => {
     e.preventDefault();
     props.ModalClose();
-    props.addStaffFx(formData);
+    props.editStaffFx(formData);
   };
 
   const handleFormInputData = e => {
@@ -40,6 +26,7 @@ const StaffForm = props => {
     });
   };
 
+  // workday...............
   const workDayChecked = (e, d) => {
     if (d.checked) {
       setFormData({ ...formData, workDay: [...formData.workDay, d.name] });
@@ -61,17 +48,31 @@ const StaffForm = props => {
   ];
 
   const workDayMap = WorkDayStringArray.map(item => {
-    return (
-      <List.Item key={item}>
-        <Checkbox
-          name={item}
-          label={item}
-          onChange={(e, d) => workDayChecked(e, d)}
-        />
-      </List.Item>
-    );
+    if (formData.workDay.includes(item)) {
+      return (
+        <List.Item key={item}>
+          <Checkbox
+            name={item}
+            label={item}
+            onChange={(e, d) => workDayChecked(e, d)}
+            defaultChecked
+          />
+        </List.Item>
+      );
+    } else {
+      return (
+        <List.Item key={item}>
+          <Checkbox
+            name={item}
+            label={item}
+            onChange={(e, d) => workDayChecked(e, d)}
+          />
+        </List.Item>
+      );
+    }
   });
 
+  // services...............
   const serviceChecked = (e, d) => {
     if (d.checked) {
       setFormData({ ...formData, service: [...formData.service, d.name] });
@@ -83,23 +84,29 @@ const StaffForm = props => {
     }
   };
 
-  const ServiceStringArray = [
-    "Full Set",
-    "Pedicure",
-    "Manicure",
-    "Pink & White"
-  ];
-
-  const serviceMap = ServiceStringArray.map(item => {
-    return (
-      <List.Item key={item}>
-        <Checkbox
-          name={item}
-          label={item}
-          onChange={(e, d) => serviceChecked(e, d)}
-        />
-      </List.Item>
-    );
+  const serviceMap = props.ServiceStringArray.map(item => {
+    if (formData.service.includes(item)) {
+      return (
+        <List.Item key={item}>
+          <Checkbox
+            name={item}
+            label={item}
+            onChange={(e, d) => serviceChecked(e, d)}
+            defaultChecked
+          />
+        </List.Item>
+      );
+    } else {
+      return (
+        <List.Item key={item}>
+          <Checkbox
+            name={item}
+            label={item}
+            onChange={(e, d) => serviceChecked(e, d)}
+          />
+        </List.Item>
+      );
+    }
   });
 
   return (
@@ -110,7 +117,7 @@ const StaffForm = props => {
           name="staff"
           required
           placeholder="staff"
-          value={formData.customer}
+          value={formData.staffName}
           onChange={e => handleFormInputData(e)}
         />
       </Form.Field>
@@ -139,10 +146,11 @@ const StaffForm = props => {
 
 const mapStateTopProps = state => {
   return {
-    staff: state.staff.list
+    staffSelectDetail: selectStaffSelectDetail(state)[0],
+    ServiceStringArray: SelectorServiceStringArray(state)
   };
 };
 
-const mapDispatchToProps = { addStaffFx: addStaff };
+const mapDispatchToProps = { editStaffFx: editStaff };
 
 export default connect(mapStateTopProps, mapDispatchToProps)(StaffForm);

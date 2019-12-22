@@ -4,10 +4,10 @@ const INITIAL_STATE = {
   navBarSelect: "dashboard"
 };
 
-export default (state = INITIAL_STATE, action) => {
-  switch (action.type) {
+export default (state = INITIAL_STATE, { type, payload }) => {
+  switch (type) {
     case NAVBAR_SELECT:
-      return { ...state, navBarSelect: action.payload };
+      return { ...state, navBarSelect: payload };
 
     default:
       return state;

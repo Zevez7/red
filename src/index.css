@@ -46,3 +46,9 @@ div.columnCSSSpread {
 .p-0 {
   padding: 0 !important;
 }
+
+.hover:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: gray;
+}

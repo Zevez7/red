@@ -2,13 +2,19 @@ import React from "react";
 import { Header, Table } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { deleteApt } from "../../actions/index";
-import EditModal from "./EditModal";
+import ApptEditModal from "../Appt/ApptEditModal";
+import { DateTime } from "luxon";
 
 const Today = props => {
-  const dashMap = props.dash.map((item, index) => {
+  const apptMap = props.sortedByDates.map((item, index) => {
     return (
       <Table.Row key={index}>
-        <Table.Cell>{item.time}</Table.Cell>
+        <Table.Cell>
+          {item.date.toLocaleString({ month: "numeric", day: "numeric" })}
+        </Table.Cell>
+        <Table.Cell>
+          {item.time.toLocaleString(DateTime.TIME_SIMPLE)}
+        </Table.Cell>
         <Table.Cell>{item.staff} </Table.Cell>
         <Table.Cell>{item.service}</Table.Cell>
         <Table.Cell>{item.customer}</Table.Cell>
@@ -20,20 +26,22 @@ const Today = props => {
           onClick={() => props.deleteAptFx(item.id)}
         />
         <Table.Cell textAlign="center" className="pointer p-0">
-          <EditModal itemData={item} />
+          <ApptEditModal itemId={item.id} />
         </Table.Cell>
       </Table.Row>
     );
   });
 
-  //****testing
-  console.log("props.dash", props.dash);
   return (
     <>
-      <Header as="h3">Today - Friday, Dec 25th</Header>
+      <Header as="h3">
+        {props.title}
+        {props.titleDates}
+      </Header>
       <Table celled striped selectable>
         <Table.Header>
           <Table.Row>
+            <Table.HeaderCell>Date</Table.HeaderCell>
             <Table.HeaderCell>Time</Table.HeaderCell>
             <Table.HeaderCell>Staff</Table.HeaderCell>
             <Table.HeaderCell>Service</Table.HeaderCell>
@@ -48,17 +56,15 @@ const Today = props => {
           </Table.Row>
         </Table.Header>
 
-        <Table.Body>{dashMap}</Table.Body>
+        <Table.Body>{apptMap}</Table.Body>
       </Table>
     </>
   );
 };
 
-const mapStateTopProps = state => {
-  //****testing
-  console.log("state", state);
+const mapStateToProps = state => {
   return {
-    dash: state.dash
+    // appt: state.appt
   };
 };
 
@@ -66,4 +72,4 @@ const mapDispatchToProps = {
   deleteAptFx: deleteApt
 };
 
-export default connect(mapStateTopProps, mapDispatchToProps)(Today);
+export default connect(mapStateToProps, mapDispatchToProps)(Today);

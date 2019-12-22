@@ -2,15 +2,24 @@ import React from "react";
 import { Card, List, Grid, Header, Table } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { deleteApt } from "./../../actions/index";
-import EditModal from "./../DashBoard/EditModal";
+import StaffEditModal from "./StaffEditModal";
+import ApptEditModal from "./../Appt/ApptEditModal";
+import selectApptStringToLuxonDT from "../../selectors/selectApptStringToLuxonDT";
+import selectApptSortedDateTimeASC from "../../selectors/selectApptSortedDateTimeASC";
+import selectApptFutureDatesFromNow from "../../selectors/selectApptFutureDatesFromNow";
+import { DateTime } from "luxon";
 
 const StaffDetail = props => {
-  const dashMap = props.staffSelectedSchedule.map((item, index) => {
+  const apptMap = props.StaffSelectAppt.map((item, index) => {
     return (
       <Table.Row key={index}>
-        <Table.Cell>{item.date}</Table.Cell>
-        <Table.Cell>{item.time}</Table.Cell>
-        <Table.Cell>{item.staff} </Table.Cell>
+        <Table.Cell>
+          {item.date.toLocaleString({ month: "numeric", day: "numeric" })}
+        </Table.Cell>
+        <Table.Cell>
+          {item.time.toLocaleString(DateTime.TIME_SIMPLE)}
+        </Table.Cell>
+        {/* <Table.Cell>{item.staff} </Table.Cell> */}
         <Table.Cell>{item.service}</Table.Cell>
         <Table.Cell>{item.customer}</Table.Cell>
         <Table.Cell>{item.phone}</Table.Cell>
@@ -21,21 +30,20 @@ const StaffDetail = props => {
           onClick={() => props.deleteAptFx(item.id)}
         />
         <Table.Cell textAlign="center" className="pointer p-0">
-          <EditModal itemData={item} />
+          <ApptEditModal itemId={item.id} />
         </Table.Cell>
       </Table.Row>
     );
   });
 
-  //****testing
-  console.log("props", props.staffSelectDetail);
-
   const scheduleMap = props.staffSelectDetail.workDay.map(item => (
     <List.Item key={item}>{item}</List.Item>
   ));
 
-  //****testing
-  console.log("props.staffSelectedSchedule", props.staffSelectedSchedule);
+  const serviceMap = props.staffSelectDetail.service.map(item => (
+    <List.Item key={item}>{item}</List.Item>
+  ));
+
   return (
     <>
       <Grid columns="equal">
@@ -43,7 +51,9 @@ const StaffDetail = props => {
           <Grid.Column width={3}>
             <Header as="h3">{props.staffSelectDetail.staffName}</Header>
 
-            <Card.Description>Started Aug 2016 </Card.Description>
+            <Card.Description>
+              <StaffEditModal />
+            </Card.Description>
           </Grid.Column>
 
           <Grid.Column width={3}>
@@ -60,10 +70,7 @@ const StaffDetail = props => {
               <List.Item>
                 <List.Header>Services</List.Header>
               </List.Item>
-              <List.Item>Pedicure</List.Item>
-              <List.Item>Manicure</List.Item>
-              <List.Item>Full Set</List.Item>
-              <List.Item>Pink & White</List.Item>
+              {serviceMap}
             </List>
           </Grid.Column>
         </Grid.Row>
@@ -75,7 +82,7 @@ const StaffDetail = props => {
                 <Table.Row>
                   <Table.HeaderCell>Date</Table.HeaderCell>
                   <Table.HeaderCell>Time</Table.HeaderCell>
-                  <Table.HeaderCell>Staff</Table.HeaderCell>
+                  {/* <Table.HeaderCell>Staff</Table.HeaderCell> */}
                   <Table.HeaderCell>Service</Table.HeaderCell>
                   <Table.HeaderCell>Customer</Table.HeaderCell>
                   <Table.HeaderCell>Phone</Table.HeaderCell>
@@ -88,7 +95,7 @@ const StaffDetail = props => {
                 </Table.Row>
               </Table.Header>
 
-              <Table.Body>{dashMap}</Table.Body>
+              <Table.Body>{apptMap}</Table.Body>
             </Table>
           </Grid.Column>
         </Grid.Row>
@@ -98,18 +105,26 @@ const StaffDetail = props => {
 };
 
 const mapStateTopProps = state => {
-  //****testing
-  console.log("state", state);
   const selectedStaff = state.staff.staffSelect;
+  const stringToLuxonDT = selectApptStringToLuxonDT(state);
+
+  const sortedByDatesASC = selectApptSortedDateTimeASC(stringToLuxonDT);
+  const futureDateFromNow = selectApptFutureDatesFromNow(sortedByDatesASC);
+
+  const StaffSelectAppt = () => {
+    console.log("getStaffSelectAppt");
+    return futureDateFromNow.filter(item => item.staff === selectedStaff);
+  };
+
   //****testing
   console.log("selectedStaff", selectedStaff);
   //****testing
-  console.log("state.dash", state.dash);
+  console.log("futureDateFromNow", futureDateFromNow);
+  //****testing
+  console.log("StaffSelectAppt", StaffSelectAppt());
   return {
-    staffSelectedSchedule: state.dash.filter(
-      item => item.staff === selectedStaff
-    ),
-    selectedStaff: state.staff.staffSelect
+    StaffSelectAppt: StaffSelectAppt(),
+    selectedStaff: selectedStaff
   };
 };
 

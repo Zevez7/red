@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { staffSelected } from "../../actions/index";
 import StaffDetail from "./StaffDetail";
-import StaffModal from "./StaffModal";
+import StaffAddModal from "./StaffAddModal";
+import selectStaffSelectDetail from "../../selectors/selectStaffSelectDetail";
 
 const style = {
   container: { paddingTop: 20, paddingLeft: 10, paddingRight: 10 }
@@ -30,9 +31,6 @@ const Staff = props => {
     );
   });
 
-  //****testing
-  console.log("props.staff", props.staff);
-
   return (
     <>
       <Grid columns="equal" stackable style={style.container}>
@@ -42,7 +40,7 @@ const Staff = props => {
             tablet={4}
             computer={3}
             largeScreen={2}
-            widescreen={1}
+            widescreen={2}
           >
             <List
               link
@@ -53,7 +51,7 @@ const Staff = props => {
             >
               {staffMap}
               <div className="m-20">
-                <StaffModal />
+                <StaffAddModal />
               </div>
             </List>
           </Grid.Column>
@@ -67,22 +65,12 @@ const Staff = props => {
 };
 
 const mapStateTopProps = state => {
-  console.log("state.staff", state.staff);
-  const staffSelectValue = state.staff.staffSelect;
-
-  const staffSelectDetail = state.staff.list.filter(item => {
-    return item.staffName === staffSelectValue;
-  });
-
-  //****testing
-  console.log("staffSelectDetail", staffSelectDetail);
-
   return {
-    staffSelect: staffSelectValue,
+    staffSelect: state.staff.staffSelect,
 
     staff: state.staff.list,
 
-    staffSelectDetail: staffSelectDetail[0]
+    staffSelectDetail: selectStaffSelectDetail(state)[0]
   };
 };
 

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Modal, Icon } from "semantic-ui-react";
-import EditForm from "./EditForm";
+import { Button, Modal } from "semantic-ui-react";
+import StaffEditForm from "./StaffEditForm";
 
-const EditModal = props => {
+const StaffModal = () => {
   const [modalOpenStatus, setModalOpenStatus] = useState(false);
 
   const ModalClose = () => {
@@ -18,19 +18,25 @@ const EditModal = props => {
       onClose={ModalClose}
       open={modalOpenStatus}
       trigger={
-        <div onClick={ModalOpen} className="pointer w-100 h-100">
-          <Icon name="edit outline" />
-        </div>
+        <Button
+          size="small"
+          icon="edit outline"
+          onClick={ModalOpen}
+          className="pointer"
+          content="Edit"
+          compact
+          basic
+        ></Button>
       }
     >
-      <Modal.Header>Edit Appointment</Modal.Header>
+      <Modal.Header>Add New Appointment</Modal.Header>
       <Modal.Content>
         <Modal.Description>
-          <EditForm ModalClose={ModalClose} itemData={props.itemData} />
+          <StaffEditForm ModalClose={ModalClose} />
         </Modal.Description>
       </Modal.Content>
     </Modal>
   );
 };
 
-export default EditModal;
+export default StaffModal;

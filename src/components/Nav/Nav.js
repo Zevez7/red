@@ -2,8 +2,8 @@ import React from "react";
 import { Menu, Icon, Dropdown, Sidebar } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { navBarSelected } from "../../actions/index";
-import AddModal from "./AddModal";
 import { Link } from "react-router-dom";
+import ApptAddModal from "../Appt/ApptAddModal";
 
 const style = {
   topBar: {
@@ -42,12 +42,9 @@ const Nav = props => {
   const menuItemList = [
     { name: "dashboard", icon: "home", link: "/" },
     { name: "staff", icon: "users", link: "/staff" },
-    { name: "service", icon: "book", link: "/" },
-    { name: "settings", icon: "settings", link: "/" }
+    { name: "service", icon: "book", link: "/service" },
+    { name: "settings", icon: "settings", link: "/settings" }
   ];
-
-  //****testing
-  console.log("props", props);
 
   //mapping the menuItem list
   const menuItemMap = menuItemList.map(item => {
@@ -77,7 +74,7 @@ const Nav = props => {
       width="very thin"
       style={style.sideBar}
     >
-      {/* this is just a place holder box */}
+      {/* place holder box */}
       <Menu.Item as="a" style={style.ItemMarginTop}></Menu.Item>
 
       {/* this is the mapped element of left sided nav bar */}
@@ -96,7 +93,7 @@ const Nav = props => {
         </Menu.Menu>
         <Menu.Menu position="right">
           <Menu.Item as="div" style={style.Button}>
-            <AddModal />
+            <ApptAddModal />
           </Menu.Item>
 
           <Dropdown

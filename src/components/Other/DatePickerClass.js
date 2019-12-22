@@ -9,7 +9,7 @@ export default class DatePickerClass extends Component {
   render() {
     return (
       <DateInput
-        dateFormat="MM-DD-YY"
+        dateFormat="MM-DD-YYYY"
         name="date"
         placeholder="Date"
         value={this.props.date}

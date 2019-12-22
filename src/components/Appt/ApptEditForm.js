@@ -1,55 +1,29 @@
 import React, { useState } from "react";
 import { Button, Dropdown, Form, Container } from "semantic-ui-react";
 import { connect } from "react-redux";
-import uid from "uid";
-import { submitApt } from "./../../actions/index";
-import DatePickerClass from "../DatePickerClass";
-import TimePickerClass from "../TimePickerClass";
+import { editApt } from "../../actions/index";
+import DatePickerClass from "../Other/DatePickerClass";
+import TimePickerClass from "../Other/TimePickerClass";
+import selectorServiceStringArray from "../../selectors/selectServiceStringArray";
 
-const service = [
-  {
-    key: "full set",
-    text: "full set",
-    value: "full set"
-  },
-  {
-    key: "pedicure",
-    text: "pedicure",
-    value: "pedicure"
-  },
-  {
-    key: "manicure",
-    text: "manicure",
-    value: "manicure"
-  },
-  {
-    key: "pink & white",
-    text: "pink & white",
-    value: "pink & white"
-  },
-  {
-    key: "waxing",
-    text: "waxing",
-    value: "waxing"
-  },
-  {
-    key: "nail repair",
-    text: "nail repair",
-    value: "nail repair"
-  }
-];
-
-const AddForm = props => {
+const ApptEditForm = props => {
   const [formData, setFormData] = useState({
-    id: uid(),
-    time: "",
-    staff: "",
-    service: "",
-    customer: "",
-    phone: "",
-    date: ""
+    id: props.itemData.id,
+    time: props.itemData.time,
+    staff: props.itemData.staff,
+    service: props.itemData.service,
+    customer: props.itemData.customer,
+    phone: props.itemData.phone,
+    date: props.itemData.date
   });
 
+  const serviceOption = props.ServiceStringArray.map(item => {
+    return {
+      key: item,
+      text: item,
+      value: item
+    };
+  });
   const staffOption = props.staff.map(item => {
     return {
       key: item.staffName,
@@ -58,13 +32,10 @@ const AddForm = props => {
     };
   });
 
-  //****testing
-  console.log("formData", formData);
-
   const handleSubmit = e => {
     e.preventDefault();
     props.ModalClose();
-    props.submitAptFx([formData]);
+    props.editAptFx(formData);
   };
 
   const handleFormInputData = e => {
@@ -80,6 +51,7 @@ const AddForm = props => {
       date: value
     });
   };
+
   const handleTimePicker = value => {
     setFormData({
       ...formData,
@@ -101,6 +73,8 @@ const AddForm = props => {
     });
   };
 
+  //****testing
+  console.log("props.itemData", props.itemData);
   return (
     <Form onSubmit={e => handleSubmit(e)}>
       <Form.Field>
@@ -133,7 +107,7 @@ const AddForm = props => {
           search
           selection
           value={formData.service}
-          options={service}
+          options={serviceOption}
           onChange={(e, result) => handleDropDownDataService(result.value)}
         />
       </Form.Field>
@@ -175,14 +149,23 @@ const AddForm = props => {
   );
 };
 
-const mapStateTopProps = state => {
+const mapStateTopProps = (state, ownProps) => {
+  //****testing
+  console.log("  ownProps.itemId", ownProps.itemId);
+
+  const itemData = state.appt.filter(item => {
+    return item.id === ownProps.itemId;
+  });
+
   return {
-    staff: state.staff.list
+    itemData: itemData[0],
+    staff: state.staff.list,
+    ServiceStringArray: selectorServiceStringArray(state)
   };
 };
 
 const mapDispatchToProps = {
-  submitAptFx: submitApt
+  editAptFx: editApt
 };
 
-export default connect(mapStateTopProps, mapDispatchToProps)(AddForm);
+export default connect(mapStateTopProps, mapDispatchToProps)(ApptEditForm);

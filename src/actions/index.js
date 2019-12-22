@@ -4,7 +4,11 @@ import {
   SUBMIT_APT,
   EDIT_APT,
   STAFF_SELECT,
-  ADD_STAFF
+  ADD_STAFF,
+  EDIT_STAFF,
+  ADD_SERVICE,
+  VIEW_DASH,
+  EDIT_USER
 } from "./types";
 
 export const navBarSelected = name => ({
@@ -32,5 +36,25 @@ export const editApt = data => ({
 
 export const addStaff = data => ({
   type: ADD_STAFF,
+  payload: data
+});
+
+export const editStaff = data => ({
+  type: EDIT_STAFF,
+  payload: data
+});
+
+export const addService = data => ({
+  type: ADD_SERVICE,
+  payload: data
+});
+
+export const viewDash = data => ({
+  type: VIEW_DASH,
+  payload: data
+});
+
+export const editUser = data => ({
+  type: EDIT_USER,
   payload: data
 });

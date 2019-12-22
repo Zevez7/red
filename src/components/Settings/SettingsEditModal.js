@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "semantic-ui-react";
-import AddForm from "./AddForm";
+// import AddForm from "./ApptAddForm";
+import SettingEditForm from "./SettingsEditForm";
 const addModal = {
   Button: {
     borderRight: "1px solid rgba(34,36,38,.15)",
@@ -30,19 +31,19 @@ const AddModal = props => {
       trigger={
         <Button
           style={addModal.Button}
-          content="ADD APPT"
+          content="EDIT USER"
           basic
-          color="green"
+          primary
           icon="plus"
-          size="mini"
+          size="small"
           onClick={ModalOpen}
         />
       }
     >
-      <Modal.Header>Add New Appointment</Modal.Header>
+      <Modal.Header>EDIT USER</Modal.Header>
       <Modal.Content>
         <Modal.Description>
-          <AddForm ModalClose={ModalClose} />
+          <SettingEditForm userData={props.userData} ModalClose={ModalClose} />
         </Modal.Description>
       </Modal.Content>
     </Modal>

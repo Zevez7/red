@@ -9,7 +9,7 @@ export default class TimePickerClass extends Component {
   render() {
     return (
       <TimeInput
-        timeFormat="ampm"
+        timeFormat="AMPM"
         name="time"
         placeholder="Time"
         value={this.props.time}

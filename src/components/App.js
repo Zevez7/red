@@ -1,15 +1,16 @@
 import React from "react";
-import DashBoard from "./DashBoard/Index";
+import DashBoard from "./DashBoard/DashBoard";
 import Nav from "./Nav/Nav";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import ScrollToTop from "./ScrollToTop";
+import ScrollToTop from "./Other/ScrollToTop";
 import Staff from "./Staff/Staff";
+import Service from "./Service/Service";
+import Settings from "./Settings/Settings";
 
 const appStyle = {
   container: {
-    marginLeft: 90,
-    border: "1px solid black"
+    marginLeft: 90
   }
 };
 
@@ -30,6 +31,16 @@ function App() {
                 exact
                 path="/staff"
                 render={props => <Staff {...props} />}
+              />
+              <Route
+                exact
+                path="/service"
+                render={props => <Service {...props} />}
+              />
+              <Route
+                exact
+                path="/settings"
+                render={props => <Settings {...props} />}
               />
             </Switch>
           </ScrollToTop>
