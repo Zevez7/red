@@ -24,22 +24,22 @@ function App() {
             <Switch>
               <Route
                 exact
-                path="/"
+                path="/schedule"
                 render={props => <DashBoard {...props} />}
               />
               <Route
                 exact
-                path="/staff"
+                path="/schedule/staff"
                 render={props => <Staff {...props} />}
               />
               <Route
                 exact
-                path="/service"
+                path="/schedule/service"
                 render={props => <Service {...props} />}
               />
               <Route
                 exact
-                path="/settings"
+                path="/schedule/settings"
                 render={props => <Settings {...props} />}
               />
             </Switch>

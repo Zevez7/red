@@ -40,10 +40,10 @@ const style = {
 const Nav = props => {
   const activeItem = props.navBarSelect;
   const menuItemList = [
-    { name: "dashboard", icon: "home", link: "/" },
-    { name: "staff", icon: "users", link: "/staff" },
-    { name: "service", icon: "book", link: "/service" },
-    { name: "settings", icon: "settings", link: "/settings" }
+    { name: "dashboard", icon: "home", link: "/schedule" },
+    { name: "staff", icon: "users", link: "/schedule/staff" },
+    { name: "service", icon: "book", link: "/schedule/service" },
+    { name: "settings", icon: "settings", link: "/schedule/settings" }
   ];
 
   //mapping the menuItem list
